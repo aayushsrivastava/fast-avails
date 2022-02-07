@@ -5,10 +5,9 @@ public enum AvailabilityStatus {
     R("reserved"),
     B("booked");
 
-    private String status;
+    private String description;
 
     AvailabilityStatus(String description) {
-
-        this.status = description;
+        this.description = description;
     }
 }

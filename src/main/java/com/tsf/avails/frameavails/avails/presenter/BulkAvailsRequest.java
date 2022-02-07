@@ -6,17 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 public class BulkAvailsRequest {
-
-    @JsonProperty("page")
-    private Integer page;
-
-    @JsonProperty("recordsPerPage")
-    private Integer recordsPerPage;
 
     @JsonProperty("fromDateTime")
     private String fromDateTime;
@@ -25,6 +21,6 @@ public class BulkAvailsRequest {
     private String toDateTime;
 
     @JsonProperty("frameIds")
-    private String[] frameIds;
+    private List<String> frameIds;
 
 }

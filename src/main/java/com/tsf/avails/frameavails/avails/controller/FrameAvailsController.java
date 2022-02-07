@@ -1,6 +1,5 @@
 package com.tsf.avails.frameavails.avails.controller;
 
-import com.tsf.avails.frameavails.avails.domain.AvailabilityStatus;
 import com.tsf.avails.frameavails.avails.domain.DateRange;
 import com.tsf.avails.frameavails.avails.domain.FrameAvails;
 import com.tsf.avails.frameavails.avails.presenter.BulkAvailsRequest;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @Slf4j
 @RestController

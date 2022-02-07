@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class DateRange {
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
     private LocalDate from;
     private LocalDate to;
 
@@ -22,11 +22,13 @@ public class DateRange {
     }
 
     public List<String> allDatesWithinRange() {
+        LocalDate currentFrom = from;
+        LocalDate currentTo = to;
         List<String> allDates = new ArrayList<>();
         do {
-            allDates.add(from.toString());
-            from = from.plusDays(1);
-        } while (from.isBefore(to));
+            allDates.add(currentFrom.format(formatter));
+            currentFrom = currentFrom.plusDays(1);
+        } while (currentFrom.isBefore(currentTo));
 
         return allDates;
     }

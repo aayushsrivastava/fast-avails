@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/avails")
@@ -26,15 +28,14 @@ public class FrameAvailsController {
     }
 
     @PostMapping("/fetch")
-    public ResponseEntity<FrameAvails> findBulkAvails(@RequestBody BulkAvailsRequest availsRequest) {
+    public ResponseEntity<List<FrameAvails>> findBulkAvails(@RequestBody BulkAvailsRequest availsRequest) {
         DateRange dateRange = new DateRange(availsRequest.getFromDateTime(), availsRequest.getToDateTime());
-        String[] frames = availsRequest.getFrameIds();
+        List<String> frames = availsRequest.getFrameIds();
         return new ResponseEntity<>(frameAvailsService.fetchAvailsFor(dateRange, frames), HttpStatus.OK);
     }
 
     @PostMapping("/create")
     public ResponseEntity<FrameAvails> createAvails(@RequestBody FrameAvails frameAvails) {
-//        FrameAvails frameAvails = new FrameAvails("1234567898", Map.of("12022022", AvailabilityStatus.A));
         frameAvailsService.create(frameAvails);
         return new ResponseEntity<>(frameAvails, HttpStatus.OK);
     }

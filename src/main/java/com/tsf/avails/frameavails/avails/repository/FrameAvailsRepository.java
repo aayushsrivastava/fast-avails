@@ -24,8 +24,9 @@ public class FrameAvailsRepository {
         log.info(String.format("Avails with ID %s saved", avails.getAvailsId()));
     }
 
-    public FrameAvailsEntity get(String availsId) {
-        return (FrameAvailsEntity) hashOperations.get(availsId, "status");
+    public FrameAvailsEntity get(String frameId, String date) {
+        String status = (String) hashOperations.get(frameId + date, "status");
+        return new FrameAvailsEntity(frameId, date, status);
     }
 
 }

@@ -11,7 +11,11 @@ import java.io.Serializable;
 @RedisHash("FrameAvails")
 public class FrameAvailsEntity implements Serializable {
 
-    private String availsId;
+    private String frameId;
+    private String startDate;
     private String status;
 
+    public String getAvailsId() {
+        return frameId + startDate;
+    }
 }

@@ -53,7 +53,7 @@ public class FrameEntity implements Serializable {
     }
 
     public FrameDetails toDomain() {
-        return new FrameDetails(this.frameId, this.env, this.mo, this.format, this.type, this.lat, this.lon, this.geoid, this.city, this.statecode, this.state, this.statelat, this.statelon);
+        return new FrameDetails(this.frameId, this.env, this.mo, this.format, this.type, this.lat, this.lon, this.geoid, this.city, this.statecode, this.state, this.statelat, this.statelon, new HashMap<>());
     }
 
     public Map<String, String> allKeyValueMap() {

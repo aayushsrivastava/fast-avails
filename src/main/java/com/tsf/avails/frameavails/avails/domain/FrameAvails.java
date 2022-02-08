@@ -24,6 +24,10 @@ public class FrameAvails {
     @JsonProperty("avails")
     private Map<String, AvailabilityStatus> availStatus = new HashMap<>();
 
+    public FrameAvails(String frameId, String availsAsString) {
+
+    }
+
     public void addStatus(String date, AvailabilityStatus status) {
         this.availStatus.put(date, status);
     }

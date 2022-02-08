@@ -2,6 +2,7 @@ package com.tsf.avails.frameavails.avails.controller;
 
 import com.tsf.avails.frameavails.avails.domain.DateRange;
 import com.tsf.avails.frameavails.avails.domain.FrameAvails;
+import com.tsf.avails.frameavails.avails.domain.FrameDetails;
 import com.tsf.avails.frameavails.avails.presenter.BulkAvailsRequest;
 import com.tsf.avails.frameavails.avails.service.FrameAvailsService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class FrameAvailsController {
     }
 
     @PostMapping("/fetch")
-    public ResponseEntity<List<FrameAvails>> findBulkAvails(@RequestBody BulkAvailsRequest availsRequest) {
+    public ResponseEntity<List<FrameDetails>> findBulkAvails(@RequestBody BulkAvailsRequest availsRequest) {
         DateRange dateRange = new DateRange(availsRequest.getFromDateTime(), availsRequest.getToDateTime());
         List<String> frames = availsRequest.getFrameIds();
         return new ResponseEntity<>(frameAvailsService.fetchAvailsFor(dateRange, frames), HttpStatus.OK);

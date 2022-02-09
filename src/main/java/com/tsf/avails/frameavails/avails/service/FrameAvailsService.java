@@ -52,13 +52,8 @@ public class FrameAvailsService {
         FutureTask<Map<String, String>> availsFetch = new FutureTask<>(() -> frameAvailsRepository.getAvails(dateRange, frameIds));
         executorService.submit(frameFetch);
         executorService.submit(availsFetch);
-
-//        List<FrameDetails> frameDetails = fetchFramesFor(frameIds);
-//        Map<String, String> availsMap = frameAvailsRepository.getAvails(dateRange, frameIds);
-
         List<FrameDetails> frameDetails = frameFetch.get();
         Map<String, String> availsMap = availsFetch.get();
-
         frameDetails.forEach(f -> f.populateAvails(availsMap.get(f.getFrameId()), dateRange));
         return frameDetails;
     }

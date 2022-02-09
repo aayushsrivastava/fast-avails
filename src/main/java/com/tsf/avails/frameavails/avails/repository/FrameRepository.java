@@ -23,7 +23,7 @@ public class FrameRepository {
 
     public FrameEntity get(String frameId, List<Long> timeKeeper) {
         Long startTime = System.currentTimeMillis();
-        List<String> keys = Arrays.asList("env", "mo", "format", "lat", "lon", "type", "geoid", "city", "statecode", "state", "statelat", "statelon");
+        List<String> keys = Arrays.asList("env", "mo", "format", "type", "lat", "lon", "geoid", "city", "statecode", "state", "statelat", "statelon");
         List<String> values = hashOperations.multiGet(frameId, keys);
         Long endTime = System.currentTimeMillis();
         Long timeTaken = endTime - startTime;

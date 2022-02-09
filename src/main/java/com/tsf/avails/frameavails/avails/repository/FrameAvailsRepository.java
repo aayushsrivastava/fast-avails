@@ -30,7 +30,7 @@ public class FrameAvailsRepository {
 //        log.info(String.format("Avails with ID %s saved", avails.getAvailsId()));
     }
 
-    public Map<String, String> get(DateRange dateRange, List<String> frameIds) {
+    public Map<String, String> getAvails(DateRange dateRange, List<String> frameIds) {
         String datePrefix = dateRange.lastTuesdayAsDate();
         List<String> keys = frameIds.stream().map(fid -> fid + datePrefix).collect(Collectors.toList());
         Map<String, String> availsMap = new HashMap<>();

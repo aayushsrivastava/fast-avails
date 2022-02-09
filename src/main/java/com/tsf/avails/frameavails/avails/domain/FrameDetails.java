@@ -25,7 +25,7 @@ public class FrameDetails {
     private String state;
     private String statelat;
     private String statelon;
-    private Map<String, AvailabilityStatus> availsDetails;
+    private Map<String, String> availsDetails;
 
     public static FrameDetails fromText(String nextLine) {
         String[] tokens = nextLine.split(",");
@@ -33,8 +33,26 @@ public class FrameDetails {
     }
 
     public void populateAvails(String availsAsString, DateRange dateRange) {
-        for (int i = 0; i < availsAsString.length(); i++) {
-            availsDetails.put("1022022" + i, AvailabilityStatus.valueOf(availsAsString.substring(i, i + 1)));
+        if ("classic".equals(this.type)) {
+            populateClassicAvails(availsAsString);
+        } else if ("digital".equals(this.type)) {
+            populateDigitalAvails(availsAsString, dateRange);
         }
     }
+
+    private void populateClassicAvails(String availsAsString) {
+        for (int i = 0; i < availsAsString.length(); i++) {
+            availsDetails.put("1022022" + i, availsAsString.substring(i, i + 1));
+        }
+    }
+
+    public void populateDigitalAvails(String availsAsString, DateRange dateRange) {
+        for (int i = 0; i < availsAsString.length(); i=i+9) {
+            String availPercent = availsAsString.substring(i, i + 3);
+            String reservPercent = availsAsString.substring(i+3, i + 6);
+            String bookedPercent = availsAsString.substring(i+6, i + 9);
+            availsDetails.put("1022022" + i, availPercent + "|" + reservPercent + "|" + bookedPercent);
+        }
+    }
+
 }

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,8 +43,8 @@ public class FrameAvailsService {
 
     public List<FrameDetails> fetchAvailsFor(DateRange dateRange, List<String> frameIds) {
         List<FrameDetails> frameDetails = fetchFramesFor(frameIds);
-        Map<String, String> frameAvailsMap = frameAvailsRepository.get(dateRange, frameIds);
-        frameDetails.forEach(f -> f.populateAvails(frameAvailsMap.get(f.getFrameId()), dateRange));
+        Map<String, String> availsMap = frameAvailsRepository.getAvails(dateRange, frameIds);
+        frameDetails.forEach(f -> f.populateAvails(availsMap.get(f.getFrameId()), dateRange));
         return frameDetails;
     }
 

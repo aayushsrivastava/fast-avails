@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @RestController
@@ -29,7 +30,7 @@ public class FrameAvailsController {
     }
 
     @PostMapping("/fetch")
-    public ResponseEntity<List<FrameDetails>> findBulkAvails(@RequestBody BulkAvailsRequest availsRequest) {
+    public ResponseEntity<List<FrameDetails>> findBulkAvails(@RequestBody BulkAvailsRequest availsRequest) throws ExecutionException, InterruptedException {
         Long startTime = System.currentTimeMillis();
         DateRange dateRange = new DateRange(availsRequest.getFromDateTime(), availsRequest.getToDateTime());
         List<String> frames = availsRequest.getFrameIds();

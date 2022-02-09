@@ -1,10 +1,7 @@
 package com.tsf.avails.frameavails.avails.service;
 
 import com.tsf.avails.frameavails.avails.domain.DateRange;
-import com.tsf.avails.frameavails.avails.domain.FrameAvails;
-import com.tsf.avails.frameavails.avails.domain.FrameAvailsEntityTransformer;
 import com.tsf.avails.frameavails.avails.domain.FrameDetails;
-import com.tsf.avails.frameavails.avails.entity.FrameAvailsEntity;
 import com.tsf.avails.frameavails.avails.entity.FrameEntity;
 import com.tsf.avails.frameavails.avails.repository.FrameAvailsRepository;
 import com.tsf.avails.frameavails.avails.repository.FrameRepository;
@@ -28,14 +25,12 @@ public class FrameAvailsService {
     private final ExecutorService executorService;
     private FrameRepository frameRepository;
     private FrameAvailsRepository frameAvailsRepository;
-    private FrameAvailsEntityTransformer transformer;
     private List<Long> timeKeeper;
 
     @Autowired
     public FrameAvailsService(FrameAvailsRepository repository, FrameRepository frameRepository) {
         this.frameAvailsRepository = repository;
         this.frameRepository = frameRepository;
-        this.transformer = new FrameAvailsEntityTransformer();
         this.timeKeeper = new ArrayList<>();
         this.executorService = Executors.newFixedThreadPool(10);
     }
@@ -56,11 +51,6 @@ public class FrameAvailsService {
         Map<String, String> availsMap = availsFetch.get();
         frameDetails.forEach(f -> f.populateAvails(availsMap.get(f.getFrameId()), dateRange));
         return frameDetails;
-    }
-
-    public void create(FrameAvails frameAvails) {
-        List<FrameAvailsEntity> frameAvailsEntities = this.transformer.fromDomain(frameAvails);
-        frameAvailsEntities.forEach(e -> this.frameAvailsRepository.create(e));
     }
 
 }

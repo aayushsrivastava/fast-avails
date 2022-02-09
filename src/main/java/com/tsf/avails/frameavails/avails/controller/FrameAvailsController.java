@@ -1,7 +1,6 @@
 package com.tsf.avails.frameavails.avails.controller;
 
 import com.tsf.avails.frameavails.avails.domain.DateRange;
-import com.tsf.avails.frameavails.avails.domain.FrameAvails;
 import com.tsf.avails.frameavails.avails.domain.FrameDetails;
 import com.tsf.avails.frameavails.avails.presenter.BulkAvailsRequest;
 import com.tsf.avails.frameavails.avails.service.FrameAvailsService;
@@ -36,15 +35,8 @@ public class FrameAvailsController {
         List<String> frames = availsRequest.getFrameIds();
         List<FrameDetails> frameDetails = frameAvailsService.fetchAvailsFor(dateRange, frames);
         Long endTime = System.currentTimeMillis();
-        log.info("Ready to render the response {}", endTime-startTime);
+        log.info("Ready to render the response {}", endTime - startTime);
         return new ResponseEntity<>(frameDetails, HttpStatus.OK);
     }
-
-    @PostMapping("/create")
-    public ResponseEntity<FrameAvails> createAvails(@RequestBody FrameAvails frameAvails) {
-        frameAvailsService.create(frameAvails);
-        return new ResponseEntity<>(frameAvails, HttpStatus.OK);
-    }
-
 
 }

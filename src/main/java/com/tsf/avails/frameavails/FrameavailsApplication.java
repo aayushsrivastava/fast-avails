@@ -30,7 +30,6 @@ public class FrameavailsApplication {
         return redisTemplate;
     }
 
-
     @Bean
     public StringRedisTemplate strRedisTemplate() {
         StringRedisTemplate redisTemplate = new StringRedisTemplate();

@@ -31,8 +31,4 @@ public class FrameRepository {
         return new FrameEntity(frameId, values);
     }
 
-    public void create(FrameEntity frame) {
-        hashOperations.putAll(frame.getFrameId(), frame.allKeyValueMap());
-//        log.info(String.format("Avails with ID %s saved", frame.getFrameId()));
-    }
 }

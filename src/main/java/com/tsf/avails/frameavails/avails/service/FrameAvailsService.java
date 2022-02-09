@@ -38,6 +38,7 @@ public class FrameAvailsService {
     public List<FrameDetails> fetchFramesFor(List<String> frameIds) {
         List<FrameDetails> frameDetails = frameIds.stream().map(e -> frameRepository.get(e, timeKeeper)).map(FrameEntity::toDomain).collect(Collectors.toList());
         log.info("Total time taken by db lookup {}", timeKeeper.stream().reduce(0L, Long::sum));
+        timeKeeper.clear();
         return frameDetails;
     }
 

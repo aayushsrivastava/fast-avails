@@ -30,9 +30,13 @@ public class FrameAvailsController {
 
     @PostMapping("/fetch")
     public ResponseEntity<List<FrameDetails>> findBulkAvails(@RequestBody BulkAvailsRequest availsRequest) {
+        Long startTime = System.currentTimeMillis();
         DateRange dateRange = new DateRange(availsRequest.getFromDateTime(), availsRequest.getToDateTime());
         List<String> frames = availsRequest.getFrameIds();
-        return new ResponseEntity<>(frameAvailsService.fetchAvailsFor(dateRange, frames), HttpStatus.OK);
+        List<FrameDetails> frameDetails = frameAvailsService.fetchAvailsFor(dateRange, frames);
+        Long endTime = System.currentTimeMillis();
+        log.info("Ready to render the response {}", endTime-startTime);
+        return new ResponseEntity<>(frameDetails, HttpStatus.OK);
     }
 
     @PostMapping("/create")

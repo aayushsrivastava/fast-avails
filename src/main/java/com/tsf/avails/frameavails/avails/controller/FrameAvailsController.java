@@ -7,6 +7,7 @@ import com.tsf.avails.frameavails.avails.presenter.BulkAvailsRequest;
 import com.tsf.avails.frameavails.avails.service.FrameAvailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +23,15 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/avails")
 public class FrameAvailsController {
 
+    private String lastDataRefreshDate;
     private FrameAvailsService frameAvailsService;
     private CodeExecTimekeeper codeExecTimekeeper;
 
     @Autowired
-    public FrameAvailsController(FrameAvailsService frameAvailsService, CodeExecTimekeeper codeExecTimekeeper) {
+    public FrameAvailsController(@Value("${lastDataRefreshddmmyyyy}") String lastDataRefreshDate,
+                                 FrameAvailsService frameAvailsService,
+                                 CodeExecTimekeeper codeExecTimekeeper) {
+        this.lastDataRefreshDate = lastDataRefreshDate;
         this.frameAvailsService = frameAvailsService;
         this.codeExecTimekeeper = codeExecTimekeeper;
     }
@@ -34,7 +39,7 @@ public class FrameAvailsController {
     @PostMapping("/fetch")
     public ResponseEntity<List<FrameDetails>> findBulkAvails(@RequestBody BulkAvailsRequest availsRequest) {
         List<FrameDetails> frameDetails = codeExecTimekeeper.profileExecution("ReadyToRender", () -> {
-            DateRange dateRange = new DateRange(availsRequest.getFromDateTime(), availsRequest.getToDateTime());
+            DateRange dateRange = new DateRange(availsRequest.getFromDateTime(), availsRequest.getToDateTime(), lastDataRefreshDate);
             List<String> frames = availsRequest.getFrameIds();
             try {
                 return frameAvailsService.fetchAvailsFor(dateRange, frames);

@@ -68,7 +68,7 @@ public class FrameDetails {
             availsData.append(availsAsString, i, i + 3).append("|");
             availsData.append(availsAsString, i + 3, i + 6).append("|");
             availsData.append(availsAsString, i + 6, i + 9);
-            availsDetails.add(date + "-" + time + ":" + availsData.toString());
+            availsDetails.add(date + "-" + time + ":" + availsData);
         }
     }
 

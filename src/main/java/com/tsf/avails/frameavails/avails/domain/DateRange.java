@@ -20,22 +20,6 @@ public class DateRange {
         this.to = LocalDate.parse(toDateTime, formatter);
     }
 
-//    public List<String> allDatesWithinRange() {
-//        LocalDate currentFrom = from;
-//        LocalDate currentTo = to;
-//        List<String> allDates = new ArrayList<>();
-//        do {
-//            allDates.add(currentFrom.format(formatter));
-//            currentFrom = currentFrom.plusDays(1);
-//        } while (currentFrom.isBefore(currentTo));
-//
-//        return allDates;
-//    }
-
-    public String startDateAsString() {
-        return this.from.format(formatter);
-    }
-
     public String lastTuesdayAsDate() {
         return "01022022";
     }

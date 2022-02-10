@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
+import static com.tsf.avails.frameavails.avails.constants.FrameAvailsConstants.INCHARGE_PERIOD_START_DAY;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,7 +39,7 @@ public class FrameDetails {
     public void populateAvails(String availsAsString, DateRange dateRange, CodeExecTimekeeper codeExecTimekeeper) {
         if ("classic".equals(this.type)) {
             codeExecTimekeeper.profileExecution("AllocateObjClassicAvails", () -> {
-                populateClassicAvails(availsAsString.substring(dateRange.getClassicStartPos(), 1 + dateRange.getClassicEndPos()));
+                populateClassicAvails(availsAsString.substring(dateRange.getClassicStartPos(), 1 + dateRange.getClassicEndPos()), dateRange);
                 return null;
             });
 
@@ -50,9 +51,11 @@ public class FrameDetails {
         }
     }
 
-    private void populateClassicAvails(String availsAsString) {
+    private void populateClassicAvails(String availsAsString, DateRange dateRange) {
+        LocalDate startDateOfFirstWeek = (LocalDate) INCHARGE_PERIOD_START_DAY.adjustInto(dateRange.getFrom());
         for (int i = 0; i < availsAsString.length(); i++) {
-            availsDetails.add("1022022_" + i + ":" + availsAsString.charAt(i));
+            LocalDate date = startDateOfFirstWeek.plusDays(i * 7L);
+            availsDetails.add(date + ":" + availsAsString.charAt(i));
         }
     }
 
@@ -60,12 +63,12 @@ public class FrameDetails {
         LocalDate from = dateRange.getFrom();
         for (int i = 0, j = 0; i < availsAsString.length(); j++, i = i + 9) {
             LocalDate date = from.plusDays(j / 24);
-//            int time = j % 24;
+            int time = j % 24;
             StringBuilder availsData = new StringBuilder(25);
             availsData.append(availsAsString, i, i + 3).append("|");
             availsData.append(availsAsString, i + 3, i + 6).append("|");
             availsData.append(availsAsString, i + 6, i + 9);
-            availsDetails.add(date + "-" + j%24 + ":" + availsData.toString());
+            availsDetails.add(date + "-" + time + ":" + availsData.toString());
         }
     }
 

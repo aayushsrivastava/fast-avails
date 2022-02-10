@@ -32,6 +32,10 @@ public class DateRange {
 //        return allDates;
 //    }
 
+    public String startDateAsString() {
+        return this.from.format(formatter);
+    }
+
     public String lastTuesdayAsDate() {
         return "01022022";
     }

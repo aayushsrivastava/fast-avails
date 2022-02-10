@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class FrameEntity implements Serializable {
     }
 
     public FrameDetails toDomain() {
-        return new FrameDetails(this.frameId, this.env, this.mo, this.format, this.type, this.lat, this.lon, this.geoid, this.city, this.statecode, this.state, this.statelat, this.statelon, new HashMap<>());
+        return new FrameDetails(this.frameId, this.env, this.mo, this.format, this.type, this.lat, this.lon, this.geoid, this.city, this.statecode, this.state, this.statelat, this.statelon, new ArrayList<>(4370));
     }
 
     public Map<String, String> allKeyValueMap() {

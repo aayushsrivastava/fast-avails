@@ -36,7 +36,7 @@ public class FrameDetails {
     public void populateAvails(String availsAsString, DateRange dateRange, CodeExecTimekeeper codeExecTimekeeper) {
         if ("classic".equals(this.type)) {
             codeExecTimekeeper.profileExecution("AllocateObjClassicAvails", () -> {
-                populateClassicAvails(availsAsString.substring(dateRange.getClassicStartPos(), dateRange.getClassicEndPos()));
+                populateClassicAvails(availsAsString.substring(dateRange.getClassicStartPos(), 1 + dateRange.getClassicEndPos()));
                 return null;
             });
 
@@ -50,7 +50,7 @@ public class FrameDetails {
 
     private void populateClassicAvails(String availsAsString) {
         for (int i = 0; i < availsAsString.length(); i++) {
-            availsDetails.put("1022022" + i, availsAsString.substring(i, i + 1));
+            availsDetails.put("1022022_" + i, availsAsString.substring(i, i + 1));
         }
     }
 
@@ -60,7 +60,7 @@ public class FrameDetails {
             availsData.append(availsAsString, i, i + 3).append("|");
             availsData.append(availsAsString, i + 3, i + 6).append("|");
             availsData.append(availsAsString, i + 6, i + 9);
-            availsDetails.put("1022022" + i, availsData.toString());
+            availsDetails.put("1022022_" + i, availsData.toString());
         }
     }
 

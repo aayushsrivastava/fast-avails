@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalUnit;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @NoArgsConstructor
@@ -38,20 +37,26 @@ public class DateRange {
     }
 
     public int getClassicStartPos() {
-        return LocalDate.parse(lastTuesdayAsDate(), formatter).until(from).getDays() / 7;
+        LocalDate availsStart = LocalDate.parse(lastTuesdayAsDate(), formatter);
+        long daysBetween = ChronoUnit.DAYS.between(availsStart, from);
+        return (int) (daysBetween / 7);
     }
 
     public int getClassicEndPos() {
-        return LocalDate.parse(lastTuesdayAsDate(), formatter).until(to).getDays() / 7;
+        LocalDate availsStart = LocalDate.parse(lastTuesdayAsDate(), formatter);
+        long daysBetween = ChronoUnit.DAYS.between(availsStart, to);
+        return (int) (daysBetween / 7);
     }
 
     public int getDigitalEndPos() {
-        int pos = LocalDate.parse(lastTuesdayAsDate(), formatter).until(to).getDays();
-        return (pos*24*9);
+        LocalDate availsStart = LocalDate.parse(lastTuesdayAsDate(), formatter);
+        long daysBetween = ChronoUnit.DAYS.between(availsStart, to);
+        return (int) ((1+daysBetween)*24*9);
     }
 
     public int getDigitalStartPos() {
-        int pos = LocalDate.parse(lastTuesdayAsDate(), formatter).until(from).getDays();
-        return (pos*24*9);
+        LocalDate availsStart = LocalDate.parse(lastTuesdayAsDate(), formatter);
+        long daysBetween = ChronoUnit.DAYS.between(availsStart, from);
+        return (int) (daysBetween*24*9);
     }
 }

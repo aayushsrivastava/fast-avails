@@ -47,11 +47,11 @@ public class FrameDetails {
     }
 
     public void populateDigitalAvails(String availsAsString, DateRange dateRange) {
-        StringBuilder availsData = new StringBuilder(25);
         for (int i = 0; i < availsAsString.length(); i = i + 9) {
+            StringBuilder availsData = new StringBuilder(25);
             availsData.append(availsAsString, i, i + 3).append("|");
             availsData.append(availsAsString, i + 3, i + 6).append("|");
-            availsData.append(availsAsString, i + 6, i + 9).append("|");
+            availsData.append(availsAsString, i + 6, i + 9);
             availsDetails.put("1022022" + i, availsData.toString());
         }
     }

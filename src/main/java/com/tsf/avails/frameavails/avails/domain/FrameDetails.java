@@ -47,11 +47,12 @@ public class FrameDetails {
     }
 
     public void populateDigitalAvails(String availsAsString, DateRange dateRange) {
-        for (int i = 0; i < availsAsString.length(); i=i+9) {
-            String availPercent = availsAsString.substring(i, i + 3);
-            String reservPercent = availsAsString.substring(i+3, i + 6);
-            String bookedPercent = availsAsString.substring(i+6, i + 9);
-            availsDetails.put("1022022" + i, availPercent + "|" + reservPercent + "|" + bookedPercent);
+        StringBuilder availsData = new StringBuilder(25);
+        for (int i = 0; i < availsAsString.length(); i = i + 9) {
+            availsData.append(availsAsString, i, i + 3).append("|");
+            availsData.append(availsAsString, i + 3, i + 6).append("|");
+            availsData.append(availsAsString, i + 6, i + 9).append("|");
+            availsDetails.put("1022022" + i, availsData.toString());
         }
     }
 

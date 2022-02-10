@@ -26,3 +26,4 @@ target/
 .idea/
 RedisImport/
 loadTest/testData/
+push

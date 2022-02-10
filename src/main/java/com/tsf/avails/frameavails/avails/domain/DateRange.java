@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalUnit;
 
 @Getter
 @NoArgsConstructor
@@ -33,5 +35,23 @@ public class DateRange {
 
     public String lastTuesdayAsDate() {
         return "01022022";
+    }
+
+    public int getClassicStartPos() {
+        return LocalDate.parse(lastTuesdayAsDate(), formatter).until(from).getDays() / 7;
+    }
+
+    public int getClassicEndPos() {
+        return LocalDate.parse(lastTuesdayAsDate(), formatter).until(to).getDays() / 7;
+    }
+
+    public int getDigitalEndPos() {
+        int pos = LocalDate.parse(lastTuesdayAsDate(), formatter).until(to).getDays();
+        return (pos*24*9);
+    }
+
+    public int getDigitalStartPos() {
+        int pos = LocalDate.parse(lastTuesdayAsDate(), formatter).until(from).getDays();
+        return (pos*24*9);
     }
 }

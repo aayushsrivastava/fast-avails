@@ -30,19 +30,19 @@ public class FrameDetails {
 
     public static FrameDetails fromText(String nextLine) {
         String[] tokens = nextLine.split(",");
-        return new FrameDetails(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7], tokens[8], tokens[9], tokens[10], tokens[11], tokens[12], new HashMap<>());
+        return new FrameDetails(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7], tokens[8], tokens[9], tokens[10], tokens[11], tokens[12], new HashMap<>(4370));
     }
 
     public void populateAvails(String availsAsString, DateRange dateRange, CodeExecTimekeeper codeExecTimekeeper) {
         if ("classic".equals(this.type)) {
             codeExecTimekeeper.profileExecution("AllocateObjClassicAvails", () -> {
-                populateClassicAvails(availsAsString);
+                populateClassicAvails(availsAsString.substring(dateRange.getClassicStartPos(), dateRange.getClassicEndPos()));
                 return null;
             });
 
         } else if ("digital".equals(this.type)) {
             codeExecTimekeeper.profileExecution("AllocateObjDigitalAvails", () -> {
-                populateDigitalAvails(availsAsString, dateRange);
+                populateDigitalAvails(availsAsString.substring(dateRange.getDigitalStartPos(), dateRange.getDigitalEndPos()), dateRange);
                 return null;
             });
         }

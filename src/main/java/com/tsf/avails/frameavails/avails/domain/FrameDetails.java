@@ -1,5 +1,6 @@
 package com.tsf.avails.frameavails.avails.domain;
 
+import com.tsf.avails.frameavails.avails.config.CodeExecTimekeeper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,11 +33,18 @@ public class FrameDetails {
         return new FrameDetails(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7], tokens[8], tokens[9], tokens[10], tokens[11], tokens[12], new HashMap<>());
     }
 
-    public void populateAvails(String availsAsString, DateRange dateRange) {
+    public void populateAvails(String availsAsString, DateRange dateRange, CodeExecTimekeeper codeExecTimekeeper) {
         if ("classic".equals(this.type)) {
-            populateClassicAvails(availsAsString);
+            codeExecTimekeeper.profileExecution("AllocateObjClassicAvails", () -> {
+                populateClassicAvails(availsAsString);
+                return null;
+            });
+
         } else if ("digital".equals(this.type)) {
-            populateDigitalAvails(availsAsString, dateRange);
+            codeExecTimekeeper.profileExecution("AllocateObjDigitalAvails", () -> {
+                populateDigitalAvails(availsAsString, dateRange);
+                return null;
+            });
         }
     }
 

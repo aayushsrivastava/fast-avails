@@ -1,5 +1,6 @@
 package com.tsf.avails.frameavails.avails.controller;
 
+import com.tsf.avails.frameavails.avails.config.CodeExecTimekeeper;
 import com.tsf.avails.frameavails.avails.domain.DateRange;
 import com.tsf.avails.frameavails.avails.domain.FrameDetails;
 import com.tsf.avails.frameavails.avails.presenter.BulkAvailsRequest;
@@ -22,20 +23,29 @@ import java.util.concurrent.ExecutionException;
 public class FrameAvailsController {
 
     private FrameAvailsService frameAvailsService;
+    private CodeExecTimekeeper codeExecTimekeeper;
 
     @Autowired
-    public FrameAvailsController(FrameAvailsService frameAvailsService) {
+    public FrameAvailsController(FrameAvailsService frameAvailsService, CodeExecTimekeeper codeExecTimekeeper) {
         this.frameAvailsService = frameAvailsService;
+        this.codeExecTimekeeper = codeExecTimekeeper;
     }
 
     @PostMapping("/fetch")
-    public ResponseEntity<List<FrameDetails>> findBulkAvails(@RequestBody BulkAvailsRequest availsRequest) throws ExecutionException, InterruptedException {
-        Long startTime = System.currentTimeMillis();
-        DateRange dateRange = new DateRange(availsRequest.getFromDateTime(), availsRequest.getToDateTime());
-        List<String> frames = availsRequest.getFrameIds();
-        List<FrameDetails> frameDetails = frameAvailsService.fetchAvailsFor(dateRange, frames);
-        Long endTime = System.currentTimeMillis();
-        log.info("Ready to render the response {}", endTime - startTime);
+    public ResponseEntity<List<FrameDetails>> findBulkAvails(@RequestBody BulkAvailsRequest availsRequest) {
+        List<FrameDetails> frameDetails = codeExecTimekeeper.profileExecution("ReadyToRender", () -> {
+            DateRange dateRange = new DateRange(availsRequest.getFromDateTime(), availsRequest.getToDateTime());
+            List<String> frames = availsRequest.getFrameIds();
+            try {
+                return frameAvailsService.fetchAvailsFor(dateRange, frames);
+            } catch (ExecutionException | InterruptedException e) {
+                log.error(e.getMessage());
+            }
+            return null;
+        });
+
+        codeExecTimekeeper.logTimes();
+        codeExecTimekeeper.resetAll();
         return new ResponseEntity<>(frameDetails, HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
 package com.tsf.avails.frameavails.avails.repository;
 
+import com.tsf.avails.frameavails.avails.config.CodeExecTimekeeper;
 import com.tsf.avails.frameavails.avails.entity.FrameEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,11 @@ public class FrameRepository {
         hashOperations = redisTemplate.opsForHash();
     }
 
-    public FrameEntity get(String frameId, List<Long> timeKeeper) {
-        Long startTime = System.currentTimeMillis();
-        List<String> keys = Arrays.asList("env", "mo", "format", "type", "lat", "lon", "geoid", "city", "statecode", "state", "statelat", "statelon");
-        List<String> values = hashOperations.multiGet(frameId, keys);
-        Long endTime = System.currentTimeMillis();
-        Long timeTaken = endTime - startTime;
-        timeKeeper.add(timeTaken);
+    public FrameEntity get(String frameId, CodeExecTimekeeper timeKeeper) {
+        List<String> values = timeKeeper.profileExecution("DBQuery:FramesGET", () -> {
+            List<String> keys = Arrays.asList("env", "mo", "format", "type", "lat", "lon", "geoid", "city", "statecode", "state", "statelat", "statelon");
+            return (List<String>)hashOperations.multiGet(frameId, keys);
+        });
         return new FrameEntity(frameId, values);
     }
 

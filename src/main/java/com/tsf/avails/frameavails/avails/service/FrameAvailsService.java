@@ -1,5 +1,6 @@
 package com.tsf.avails.frameavails.avails.service;
 
+import com.tsf.avails.frameavails.avails.config.CodeExecTimekeeper;
 import com.tsf.avails.frameavails.avails.domain.DateRange;
 import com.tsf.avails.frameavails.avails.domain.FrameDetails;
 import com.tsf.avails.frameavails.avails.entity.FrameEntity;
@@ -9,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -24,32 +24,29 @@ public class FrameAvailsService {
 
     private final ExecutorService executorService;
     private FrameRepository frameRepository;
+    private CodeExecTimekeeper codeExecTimekeeper;
     private FrameAvailsRepository frameAvailsRepository;
-    private List<Long> timeKeeper;
 
     @Autowired
-    public FrameAvailsService(FrameAvailsRepository repository, FrameRepository frameRepository) {
+    public FrameAvailsService(FrameAvailsRepository repository, FrameRepository frameRepository, CodeExecTimekeeper codeExecTimekeeper) {
         this.frameAvailsRepository = repository;
         this.frameRepository = frameRepository;
-        this.timeKeeper = new ArrayList<>();
+        this.codeExecTimekeeper = codeExecTimekeeper;
         this.executorService = Executors.newFixedThreadPool(10);
     }
 
     public List<FrameDetails> fetchFramesFor(List<String> frameIds) {
-        List<FrameDetails> frameDetails = frameIds.stream().map(e -> frameRepository.get(e, timeKeeper)).map(FrameEntity::toDomain).collect(Collectors.toList());
-        log.info("Total time taken by db lookup {}", timeKeeper.stream().reduce(0L, Long::sum));
-        timeKeeper.clear();
-        return frameDetails;
+        return frameIds.stream().map(e -> frameRepository.get(e, codeExecTimekeeper)).map(FrameEntity::toDomain).collect(Collectors.toList());
     }
 
     public List<FrameDetails> fetchAvailsFor(DateRange dateRange, List<String> frameIds) throws ExecutionException, InterruptedException {
         FutureTask<List<FrameDetails>> frameFetch = new FutureTask<>(() -> fetchFramesFor(frameIds));
-        FutureTask<Map<String, String>> availsFetch = new FutureTask<>(() -> frameAvailsRepository.getAvails(dateRange, frameIds));
+        FutureTask<Map<String, String>> availsFetch = new FutureTask<>(() -> frameAvailsRepository.getAvails(dateRange, frameIds, codeExecTimekeeper));
         executorService.submit(frameFetch);
         executorService.submit(availsFetch);
         List<FrameDetails> frameDetails = frameFetch.get();
         Map<String, String> availsMap = availsFetch.get();
-        frameDetails.forEach(f -> f.populateAvails(availsMap.get(f.getFrameId()), dateRange));
+        frameDetails.forEach(f -> f.populateAvails(availsMap.get(f.getFrameId()), dateRange, codeExecTimekeeper));
         return frameDetails;
     }
 

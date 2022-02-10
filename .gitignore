@@ -27,3 +27,6 @@ target/
 RedisImport/
 loadTest/testData/
 push
+loadTest/aggregateReport.xml
+loadTest/latencyOverTime.xml
+loadTest/tps.xml

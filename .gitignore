@@ -30,3 +30,5 @@ push
 loadTest/aggregateReport.xml
 loadTest/latencyOverTime.xml
 loadTest/tps.xml
+loadTest/fetch.sh
+loadTest/sampleRun.xml

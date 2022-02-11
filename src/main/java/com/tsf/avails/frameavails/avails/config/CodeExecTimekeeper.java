@@ -3,8 +3,8 @@ package com.tsf.avails.frameavails.avails.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -14,7 +14,7 @@ public class CodeExecTimekeeper {
     private Map<String, Long> executionTimeMap;
 
     public CodeExecTimekeeper() {
-        this.executionTimeMap = new HashMap<>();
+        this.executionTimeMap = new ConcurrentHashMap<>();
     }
 
     public <T> T profileExecution(String name, Supplier<T> supplier) {
